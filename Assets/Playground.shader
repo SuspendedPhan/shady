@@ -16,6 +16,7 @@
 			#pragma fragment frag
 
 			#include "UnityCG.cginc"
+			#include "sToolbox.cginc"
 
 			struct appdata
 			{
@@ -41,9 +42,8 @@
 
 			fixed4 frag (v2f i) : SV_Target
 			{
-				fixed4 col = tex2D(_MainTex, i.uv);
-				// just invert the colors
-				col = 1 - col;
+				fixed4 col;
+				col.rgb = 0;
 				return col;
 			}
 			ENDCG
