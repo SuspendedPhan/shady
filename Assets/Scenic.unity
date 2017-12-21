@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 1010113824}
   - component: {fileID: 1010113823}
   - component: {fileID: 1010113822}
+  - component: {fileID: 1010113828}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -212,6 +213,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1010113828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1010113821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d01430cb7446d4787e1549b55f0a70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  format: 0
+  stereo: 0
+  stereoFormat: 1
+  frameSize: 4
+  _cubemapSize: 1
+  panoramaProjection: 0
+  encodeQuality: 1
+  _antiAliasing: 0
+  _targetFramerate: 2
+  isDedicated: 0
+  captureGUI: 1
+  mode: 0
+  customPath: 1
+  customPathFolder: /Users/lerp/RockVR/
+  streamingAddress: 
+  interPupillaryDistance: 0.0635
+  offlineRender: 0
 --- !u!1 &1640763354
 GameObject:
   m_ObjectHideFlags: 0
