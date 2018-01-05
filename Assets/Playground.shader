@@ -60,9 +60,79 @@
 			    return st;
 			}
 
+			float random(float2 x)
+			{
+				return 1;
+				if (x.x == 1 && x.y == 1)
+				{
+					return 3;
+				}
+				return 0;
+			}
+
+			fixed4 test(v2f i)
+			{
+				float2 st = i.uv.xy;
+				float lum = 0;
+				float totalScale = 3;
+
+				st *= 3;
+				float2 rc = floor(st);
+				st = frac(st);
+				st = st * 2 - 1;
+
+				float ii = -0;
+				float jj = -1;
+				float2 ij = float2(ii, jj);
+                float2 n = float2(-jj, ii);
+                float2 bound1 = .5 * -n + .5 * -ij;
+                float2 bound2 = ij + n * .5;
+                float2 min_bound = min(bound1, bound2);
+                float2 max_bound = max(bound1, bound2);
+
+                // lum +=
+                //     step(min_bound.x, st.x) *
+                //     step(st.x, max_bound.x) *
+                //     step(min_bound.y, st.y) *
+                //     step(st.y, max_bound.y);
+                lum += 1 - length(st);
+
+		        for (int ii = -1; ii <= 1; ii++)
+		        {
+		            if (rc.x + ii < 0) continue;
+		            if (rc.x + ii >= totalScale) continue;
+		            for (int jj = -1; jj <= 1; jj++)
+		            {
+		                if (abs(ii) == abs(jj)) continue;
+		                if (rc.y + jj < 0) continue;
+		                if (rc.y + jj >= totalScale) continue;
+		                if (random(rc) + random(rc + float2(ii, jj)) < 1) continue;
+						float2 ij = float2(ii, jj);
+		                float2 n = float2(-jj, ii);
+		                float2 bound1 = .5 * -n + .5 * -ij;
+		                float2 bound2 = ij + n * .5;
+		                float2 min_bound = min(bound1, bound2);
+		                float2 max_bound = max(bound1, bound2);
+
+		                lum +=
+		                    step(min_bound.x, st.x) *
+		                    step(st.x, max_bound.x) *
+		                    step(min_bound.y, st.y) *
+		                    step(st.y, max_bound.y);
+		            }
+		        }
+				// lum = 1;
+		        fixed4 answer;
+		        answer.a = 0;
+		        answer.rgb = lum;
+		        return answer;
+		    }
+
 			fixed4 frag (v2f i) : SV_Target
 			{
+				return test(i);
 				float2 st = i.uv;
+				st.y *= _ScreenParams.y / _ScreenParams.x;
 				fixed4 col;
 				col.a = 1;
 				float answer = 0;
@@ -76,8 +146,13 @@
 				// f(100) = 1
 				// start from the middle, move to the left
 
-				float qq = frac(st.x * rcSize);
 				float margin = .25;
+
+				float qq = st;
+				qq *= rcSize - margin;
+				// qq += margin / 2;
+				qq = frac(qq);
+
 
 				st *= rcSize - margin;
 				st += margin / 2;
@@ -87,14 +162,19 @@
 				st *= 2;
 				st /= 1-margin;
 				st = step(st, 1) * st;
+
+				// st.x =
 				// col.rgb = f3(st.x * st.y);
 
 				col.rgb = f3(st,0);
 				if (st.x > .98) {
 					// col.g = 0;
 				}
-				if (qq > .995) {
-					// col.rgb = float3(0, 1, 1);
+				if (qq > .99) {
+					col.rgb = 1;
+				}
+				if (qq < .01) {
+					col.rgb = float3(0,0,1);
 				}
 				return col;
 				// END TILE
