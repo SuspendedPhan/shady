@@ -27,8 +27,8 @@ public class Main : MonoBehaviour {
         mat.SetFloat("uRecording", recording ? 1 : 0);
 	}
 
-    void OnRenderImage(RenderTexture src, RenderTexture dest) {
-        Graphics.Blit(src, dest, mat);
-        // Graphics.Blit(dest, dest, mat2);
-    }
+    // void OnRenderImage(RenderTexture src, RenderTexture dest) {
+    //     Graphics.Blit(src, dest, mat);
+    //     // Graphics.Blit(dest, dest, mat2);
+    // }
 }
