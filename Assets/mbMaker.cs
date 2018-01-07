@@ -26,13 +26,21 @@ public class mbMaker : MonoBehaviour {
                 trianglePos + Random.onUnitSphere * 2,
                 trianglePos + Random.onUnitSphere * 2
             };
-            tri.normal = Vector3.Cross(tri.vertices[0] - tri.vertices[1],
-                tri.vertices[0] - tri.vertices[2]);
-            if (Vector3.Dot(tri.normal, Camera.main.transform.forward) > 0)
+            var centroid = (tri.vertices[0] + tri.vertices[1] + tri.vertices[2]) / 3;
+            tri.normal = Vector3.Cross(tri.vertices[1] - tri.vertices[0],
+                tri.vertices[2] - tri.vertices[0]);
+            // if (Vector3.Dot(tri.normal, Camera.main.transform.forward) > 0)
+            if (Vector3.Dot(tri.normal, centroid - Camera.main.transform.position) > 0)
             {
                 tri.normal = -tri.normal;
+                tri.vertexIndices = new int[] { i * 3 + 2, i * 3 + 1, i * 3};
             }
-            tri.vertexIndices = new int[] { i * 3, i * 3 + 1, i * 3 + 2};
+            else
+            {
+                tri.vertexIndices = new int[] { i * 3, i * 3 + 1, i * 3 + 2};
+            }
+            // var tri2 = new Triangle();
+            // tri2.vertices = tri.vertices
             tris.Add(tri);
         }
         var vertices = new List<Vector3>();
