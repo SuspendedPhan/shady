@@ -6,11 +6,13 @@ using UnityEngine;
 public class Main : MonoBehaviour {
     public Material mat;
     public Material mat2;
+    public Material mCursor;
     private bool recording;
 
 	// Use this for initialization
 	void Start () {
         bool a = VideoCaptureCtrl.instance.debug;
+        GetComponent<VideoCapture>().customPathFolder = @"C:/Users/Yaktori/Documents/GitHub/shady/Captures/";
 	}
 
 	// Update is called once per frame
@@ -18,17 +20,27 @@ public class Main : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.O) && !recording) {
             GetComponent<VideoCapture>().StartCapture();
             recording = true;
+            Debug.Log("Start recording.");
 
         } else if (Input.GetKeyDown(KeyCode.P) && recording) {
             GetComponent<VideoCapture>().StopCapture();
             recording = false;
+            Debug.Log("Stop recording.");
         }
         mat.SetFloat("uTime", Time.time);
         mat.SetFloat("uRecording", recording ? 1 : 0);
 	}
 
-    // void OnRenderImage(RenderTexture src, RenderTexture dest) {
-    //     Graphics.Blit(src, dest, mat);
+    void OnRenderImage(RenderTexture src, RenderTexture dest) {
+        
+        mCursor.SetVector("uMouse", MouseUV());
+        Graphics.Blit(src, dest, mCursor);
     //     // Graphics.Blit(dest, dest, mat2);
-    // }
+    }
+
+    public static Vector2 MouseUV()
+    {
+        return new Vector2(Input.mousePosition.x / Screen.width,
+            Input.mousePosition.y / Screen.height);
+    }
 }
