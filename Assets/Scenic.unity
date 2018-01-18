@@ -145,8 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a44abb611886440e9e998f64672a73b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mat: {fileID: 2100000, guid: dca9e724392d6421da4a8dcc6858f32e, type: 2}
-  mat2: {fileID: 0}
+  mPlayground: {fileID: 2100000, guid: dca9e724392d6421da4a8dcc6858f32e, type: 2}
   mCursor: {fileID: 2100000, guid: 99353dd87d8cb0740bedbfbdaee92324, type: 2}
 --- !u!81 &1010113823
 AudioListener:
@@ -261,7 +260,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1619588826
 MonoBehaviour:
   m_ObjectHideFlags: 0

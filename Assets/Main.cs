@@ -4,8 +4,7 @@ using RockVR.Video;
 using UnityEngine;
 
 public class Main : MonoBehaviour {
-    public Material mat;
-    public Material mat2;
+    public Material mPlayground;
     public Material mCursor;
     private bool recording;
 
@@ -27,15 +26,15 @@ public class Main : MonoBehaviour {
             recording = false;
             Debug.Log("Stop recording.");
         }
-        mat.SetFloat("uTime", Time.time);
-        mat.SetFloat("uRecording", recording ? 1 : 0);
+        mPlayground.SetFloat("uTime", Time.time);
+        mPlayground.SetFloat("uRecording", recording ? 1 : 0);
 	}
 
     void OnRenderImage(RenderTexture src, RenderTexture dest) {
         
         mCursor.SetVector("uMouse", MouseUV());
-        Graphics.Blit(src, dest, mCursor);
-    //     // Graphics.Blit(dest, dest, mat2);
+        Graphics.Blit(src, dest, mPlayground);
+        // Graphics.Blit(src, dest, mCursor);
     }
 
     public static Vector2 MouseUV()
