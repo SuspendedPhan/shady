@@ -12,7 +12,8 @@ public class Main : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         bool a = VideoCaptureCtrl.instance.debug;
-        GetComponent<VideoCapture>().customPathFolder = @"C:/Users/Yaktori/Documents/GitHub/shady/Captures/";
+        RockVR.Video.PathConfig.SaveFolder = @"C:/Users/Yaktori/Documents/GitHub/shady/Captures/";
+        // GetComponent<VideoCapture>().customPathFolder = @"C:\Users\Yaktori/Documents/GitHub/shady/Captures/";
 	}
 
 	// Update is called once per frame

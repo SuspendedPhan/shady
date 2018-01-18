@@ -17,7 +17,6 @@
 			#pragma fragment frag
 
 			#include "UnityCG.cginc"
-			#include "sToolbox.cginc"
 			
 
 			struct appdata
@@ -47,6 +46,7 @@
 				return o;
 			}
 
+			#include "sToolbox.cginc"
 			#include "s01Random.cginc"
 
 			fixed4 test(v2f i)
@@ -200,7 +200,13 @@
 
 			fixed4 frag (v2f i) : SV_Target
 			{
-				return s01Random(i.uv);
+				fixed4 blah = s01Random(i.uv);
+				fixed4 c = cursor(i.uv);
+				// return c.a;
+				blah.rgb = saturate(blah.rgb);
+				blah.rgb = lerp(blah.rgb, c.rgb, c.a);
+				return blah;
+
 				// return test(i);
 				return test2(i);
 				float2 st = i.uv;
