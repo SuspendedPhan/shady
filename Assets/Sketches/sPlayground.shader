@@ -18,6 +18,7 @@
 
 			#include "UnityCG.cginc"
 			#include "sToolbox.cginc"
+			
 
 			struct appdata
 			{
@@ -33,6 +34,7 @@
 
 			sampler2D _MainTex;
 			float uTime;
+			float2 uMouse;
 			float2 rcSize;
 			static const float PI = 3.14159265f;
 			static const float TWOPI = PI * 2;
@@ -45,30 +47,7 @@
 				return o;
 			}
 
-			float3 f3(float x) { return float3(x, x, x); }
-			float3 f3(float2 x, float y) { return float3(x.x, x.y, y); }
-			float2 invlerp(float x, float y, float2 t)
-			{
-				return (t - x) / (y - x);
-			}
-			float2 rotate(float2 st, float angle)
-			{
-			    st -= 0.5;
-			    st = mul(float2x2(cos(angle),-sin(angle),
-					sin(angle),cos(angle)), st);
-			    st += 0.5;
-			    return st;
-			}
-
-			float random(float2 x)
-			{
-				return 1;
-				if (x.x == 1 && x.y == 1)
-				{
-					return 3;
-				}
-				return 0;
-			}
+			#include "s01Random.cginc"
 
 			fixed4 test(v2f i)
 			{
@@ -81,14 +60,14 @@
 				st = frac(st);
 				st = st * 2 - 1;
 
-				float ii = -0;
-				float jj = -1;
-				float2 ij = float2(ii, jj);
-                float2 n = float2(-jj, ii);
-                float2 bound1 = .5 * -n + .5 * -ij;
-                float2 bound2 = ij + n * .5;
-                float2 min_bound = min(bound1, bound2);
-                float2 max_bound = max(bound1, bound2);
+				// float ii = -0;
+				// float jj = -1;
+				// float2 ij = float2(ii, jj);
+    //             float2 n = float2(-jj, ii);
+    //             float2 bound1 = .5 * -n + .5 * -ij;
+    //             float2 bound2 = ij + n * .5;
+    //             float2 min_bound = min(bound1, bound2);
+    //             float2 max_bound = max(bound1, bound2);
 
                 // lum +=
                 //     step(min_bound.x, st.x) *
@@ -221,6 +200,7 @@
 
 			fixed4 frag (v2f i) : SV_Target
 			{
+				return s01Random(i.uv);
 				// return test(i);
 				return test2(i);
 				float2 st = i.uv;

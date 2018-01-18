@@ -7,6 +7,7 @@ public class Main : MonoBehaviour {
     public Material mPlayground;
     public Material mCursor;
     private bool recording;
+    public static Vector2 uMouse;
 
 	// Use this for initialization
 	void Start () {
@@ -28,6 +29,11 @@ public class Main : MonoBehaviour {
         }
         mPlayground.SetFloat("uTime", Time.time);
         mPlayground.SetFloat("uRecording", recording ? 1 : 0);
+        uMouse = Input.mousePosition;
+        uMouse.x /= Screen.width;
+        uMouse.y /= Screen.height;
+        mPlayground.SetVector("uMouse", uMouse);
+        s01Random.Update(mPlayground);
 	}
 
     void OnRenderImage(RenderTexture src, RenderTexture dest) {
