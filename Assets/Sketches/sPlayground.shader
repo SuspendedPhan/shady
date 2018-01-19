@@ -17,7 +17,7 @@
 			#pragma fragment frag
 
 			#include "UnityCG.cginc"
-			
+
 
 			struct appdata
 			{
@@ -48,6 +48,7 @@
 
 			#include "sToolbox.cginc"
 			#include "s01Random.cginc"
+			#include "sShapingGrounds.cginc"
 
 			fixed4 test(v2f i)
 			{
@@ -107,11 +108,6 @@
 		        return answer;
 		    }
 
-		    float tri(float x)
-		    {
-		    	return abs(frac(x)*2-1);
-		    }
-
 		    fixed4 test2 (v2f i) {
 		    	fixed4 answer;
 		    	float lum = 0;
@@ -159,7 +155,7 @@
 		    	float rhs = tri((st.x*st.y +st.x*2+st.y));
 		    	rhs = rhs*2-1;
 		    	rhs *= 3.14159/2;
-		    	
+
 		    	// lhs =st.y;
 		    	// rhs=sin(st.x*3.14*2);
 
@@ -177,7 +173,7 @@
 		    	ee = pow(ee, 300);
 		    	lum += saturate(ww + ee);
 		    	return lum;
-		    	
+
 		    	// lum = 1 - (st.y/st.x)%.2;
 		    	// st*=10;
 		    	// st=frac(st);
@@ -200,6 +196,7 @@
 
 			fixed4 frag (v2f i) : SV_Target
 			{
+				return shapingGrounds(i);
 				fixed4 blah = s01Random(i.uv);
 				fixed4 c = cursor(i.uv);
 				// return c.a;

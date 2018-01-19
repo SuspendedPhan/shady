@@ -47,7 +47,7 @@ fixed4 cursor(float2 st)
 	float circleRadius = .016;
 	float circleWidth = .003;
 	float antialias = .003;
-	
+
 	fixed4 answer;
 	st.x *= _ScreenParams.x / _ScreenParams.y;
 	float2 mouse = uMouse;
@@ -65,6 +65,24 @@ fixed4 cursor(float2 st)
 			dist);
 	// TODO: visualize mouse.x, mouse.y
 	return answer;
+}
+
+float tri(float x)
+{
+	return abs(frac(x)*2-1);
+}
+
+float bounce01(float x)
+{
+	return 1 - abs(saturate(x)*2-1);
+}
+
+float smoothbounce01(float x)
+{
+	x = saturate(x);
+	return
+		smoothstep(0, .5, x) * step(x, .5) +
+		smoothstep(1, .5, x) * step(.5, x);
 }
 
 #endif
