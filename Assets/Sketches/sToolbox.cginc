@@ -67,4 +67,11 @@ fixed4 cursor(float2 st)
 	return answer;
 }
 
+float noise(float x)
+{
+	float i = floor(x);
+	// return random(i);
+	return lerp(random(i), random(i + 1), frac(x));
+}
+
 #endif
