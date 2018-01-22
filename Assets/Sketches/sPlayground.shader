@@ -47,7 +47,8 @@
 			}
 
 			#include "sToolbox.cginc"
-			#include "s01Random.cginc"
+			// #include "s01Random.cginc"
+			#include "s02Noise.cginc"
 
 			fixed4 test(v2f i)
 			{
@@ -200,7 +201,7 @@
 
 			fixed4 frag (v2f i) : SV_Target
 			{
-				fixed4 blah = s01Random(i.uv);
+				fixed4 blah = s02Noise(i.uv);
 				fixed4 c = cursor(i.uv);
 				// return c.a;
 				blah.rgb = saturate(blah.rgb);
