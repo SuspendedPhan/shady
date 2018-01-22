@@ -16,7 +16,7 @@
 			#pragma fragment frag
 
 			#include "UnityCG.cginc"
-			
+
 			struct appdata
 			{
 				float4 vertex : POSITION;
@@ -44,8 +44,9 @@
 			}
 
 			#include "sToolbox.cginc"
-			// #include "s01Random.cginc"
+			#include "s01Random.cginc"
 			#include "s02Noise.cginc"
+			#include "sShapingGrounds.cginc"
 
 			fixed4 frag (v2f i) : SV_Target
 			{
