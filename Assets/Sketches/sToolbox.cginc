@@ -9,7 +9,17 @@ float2 invlerp(float x, float y, float2 t)
 	return (t - x) / (y - x);
 }
 
+float invlerp(float x, float y, float t)
+{
+	return (t - x) / (y - x);
+}
+
 float2 invlerp01(float x, float y, float2 t)
+{
+	float value = invlerp(x, y, t);
+	return saturate(value);
+}
+float invlerp01(float x, float y, float t)
 {
 	float value = invlerp(x, y, t);
 	return saturate(value);
@@ -29,8 +39,9 @@ float random(float2 _st) {
         43758.5453123);
 }
 
-float random(float x) {
-	return random(float2(0, x));
+float random11(float x)
+{
+	return random(x) * 2 - 1;
 }
 
 float randGauss(float2 x) {
