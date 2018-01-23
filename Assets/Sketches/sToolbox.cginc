@@ -103,4 +103,27 @@ float smoothbounce01(float x)
 		smoothstep(1, .5, x) * step(.5, x);
 }
 
+void distortGrid(float x01, float cells, out float iPos, out float fPos)
+{
+	float seed = 79;
+    float distortion = .5;
+
+    float4 cc = 0;
+    float x = x01 * (cells - 1);
+    float ix = floor(x);
+
+    float lo = ix == 0 ? 0 :
+        ix - 1 + random(seed + ix - 1) * distortion;
+    float mi =
+        ix + random(seed + ix) * distortion;
+    float hi = ix == cells - 2 ? cells - 1 :
+        ix + 1 + random(seed + ix + 1) * distortion;
+
+    fPos = 0;
+    fPos += invlerp01(lo, mi, x) * step(x, mi);
+    fPos += invlerp01(mi, hi, x) * step(mi, x);
+    iPos = ix;
+    if (x > mi) iPos += 1;
+}
+
 #endif
