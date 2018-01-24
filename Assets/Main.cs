@@ -34,6 +34,9 @@ public class Main : MonoBehaviour {
             GetComponent<VideoCapture>().StopCapture();
             recording = false;
             Debug.Log("Stop recording.");
+        } else if (Input.GetKeyDown(KeyCode.C)) {
+            ScreenCapture.CaptureScreenshot("Captures/" + Toolbox.GetUniqueFilename() + ".png");
+            Debug.Log("Captured screenshot!");
         }
         mPlayground.SetFloat("uTime", Time.time);
         mPlayground.SetFloat("uRecording", recording ? 1 : 0);
