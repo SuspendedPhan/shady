@@ -78,6 +78,11 @@ float random11(float x)
 	return random(x) * 2 - 1;
 }
 
+float2 random211(float2 st)
+{
+	return float2(random(st), random(st * .572 + 35.67)) * 2 - 1;
+}
+
 float randGauss(float2 x) {
 	float value =
 		random(x) +
@@ -139,8 +144,14 @@ float noise2(float x, float y)
 	return noise2(float2(x, y));
 }
 
+float noise211(float2 x)
+{
+	return noise2(x) * 2 - 1;
+}
+
 float modnoise(float x01, float scalei, float seed)
 {
+	return 0;  // i don't think this is working
 	float x = x01;
 	x *= scalei;
 	float starti = floor(x);
@@ -151,6 +162,7 @@ float modnoise(float x01, float scalei, float seed)
 
 float modnoise2(float2 st01, float scalei, float seed=0)
 {
+	return 0;  // i don't think this is working
 	float2 st = st01 * scalei;
 	float2 ones = float2(0, 1);
 	float2 sti = floor(st);
@@ -160,6 +172,23 @@ float modnoise2(float2 st01, float scalei, float seed=0)
 	float tr = random(seed + mod(seed, seed + scalei, sti + ones.yy));
 	float bl = random(seed + mod(seed, seed + scalei, sti + ones.xx));
 	float br = random(seed + mod(seed, seed + scalei, sti + ones.yx));
+	float top = smoothlerp(tl, tr, stf.x);
+	float bot = smoothlerp(bl, br, stf.x);
+	return smoothlerp(bot, top, stf.y);
+}
+
+float gnoise211(float2 st)
+{
+	float seed = 0;
+	float2 ones = float2(0, 1);
+	float2 sti = floor(st);
+	float2 stf = frac(st);
+	float tl = dot(random211(seed + sti + ones.xy), ones.xy - stf);
+	float tr = dot(random211(seed + sti + ones.yy), ones.yy - stf);
+	float bl = dot(random211(seed + sti + ones.xx), ones.xx - stf);
+	float br = dot(random211(seed + sti + ones.yx), ones.yx - stf);
+
+	// return tr;
 	float top = smoothlerp(tl, tr, stf.x);
 	float bot = smoothlerp(bl, br, stf.x);
 	return smoothlerp(bot, top, stf.y);

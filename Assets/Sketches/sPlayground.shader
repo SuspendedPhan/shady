@@ -47,11 +47,12 @@
 			#include "s01Random.cginc"
 			#include "s02Noise.cginc"
 			#include "s03NoiseBall.cginc"
+			#include "s04GradNoise.cginc"
 			#include "sShapingGrounds.cginc"
 
 			fixed4 frag (v2f i) : SV_Target
 			{
-				fixed4 blah = s03NoiseBall(i.uv);
+				fixed4 blah = s04GradNoise(i.uv);
 				fixed4 c = cursor(i.uv);
 				blah.rgb = saturate(blah.rgb);
 				blah.rgb = lerp(blah.rgb, c.rgb, c.a);
