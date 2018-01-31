@@ -5,6 +5,11 @@ float2 f2(float x) { return float2(x, x); }
 float3 f3(float x) { return float3(x, x, x); }
 float3 f3(float2 x, float y) { return float3(x.x, x.y, y); }
 
+float min(float x, float y, float z)
+{
+	return min(min(x, y), z);
+}
+
 float sin01(float x)
 {
 	return sin(x) / 2 + .5;
