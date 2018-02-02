@@ -12,11 +12,12 @@ float sdf(float2 p, out float color)
     // color = 1;
     // return max(d, r - .1);
 
+    float2 light = float2(1, 1);
+
     float d1 = distance(p, uMouse) - .1;
     float d2 = distance(p, float2(.4, .5)) - .1;
     float d3 = distance(p, float2(.5, .8)) - .1;
-    // d2 = 100;
-    // d3 = 100;
+
     float mind = min(d1, d2, d3);
     if (mind > 0)
     {
@@ -24,7 +25,10 @@ float sdf(float2 p, out float color)
     }
     else if (mind == d1)
     {
-        color = saturate(dot(normalize(p - uMouse), float2(1 - sin(_Time.y), sin(_Time.z))));
+        float2 n = normalize(p - uMouse);
+        float2 toLight = normalize(light - (p + n * .1));
+        color = dot(n, toLight);
+        // color = saturate(dot(normalize(p - uMouse), float2(1 - sin(_Time.y), sin(_Time.z))));
         // color = .25;
     }
     else if (mind == d2)
