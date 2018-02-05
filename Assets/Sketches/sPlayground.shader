@@ -32,8 +32,6 @@
 			sampler2D _MainTex;
 			float uTime;
 			float2 uMouse;
-			static const float PI = 3.14159265f;
-			static const float TWOPI = PI * 2;
 
 			v2f vert (appdata v)
 			{
@@ -58,6 +56,7 @@
 				fixed4 c = cursor(i.uv);
 				blah.rgb = saturate(blah.rgb);
 				blah.rgb = lerp(blah.rgb, c.rgb, c.a);
+				blah.a = 1;
 				return blah;
 			}
 			ENDCG

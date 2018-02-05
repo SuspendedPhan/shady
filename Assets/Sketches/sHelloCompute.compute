@@ -1,12 +1,56 @@
 ﻿// Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel CSMain
 
+#define COMPUTESHADER
+#include "sToolbox.cginc"
+// #include "testy.cginc"
+
+float2 uResolution;
+float rCount;
+float aCount;
+float uTime;
+int ballCount;
+
 Texture2D<float4> Source;
 RWTexture2D<float4> Destination;
 
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-	// Destination[id.xy] = float4(id.x & id.y, (id.x & 15)/15.0, (id.y & 15)/15.0, 0.0);
-	Destination[id.xy] = .5;
+	float2 uv = id.xy / uResolution;
+	// Destination[id.xy] = smoothstep(0, 1, uv.x) + smoothstep(0, 1, uv.y);
+
+	// float2 f = f2(0, 0);
+	float rStep = 1 / rCount;
+	float aStep = 1 / aCount;
+	float r = id.x / rCount;
+	float a = id.y / aCount;
+	float rOffset = random11(id.xy) * rStep / 3;
+	float aOffset = random11(id.xy) * aStep / 3;
+	// r += rOffset;
+	// a += aOffset;
+
+	float radius = .02;
+	// a += sin(uTime);
+	float x = r * cos(a * TWOPI);
+	float y = r * sin(a * TWOPI);
+	// x = x * .5 + .5;
+	// y = y * .5 + .5;
+	// x *= uResolution.x;
+	// y *= uResolution.y;
+	// Destination[int2(x, y)] = 1;
+	// return;
+	for (float ix = -radius; ix < radius; ix += 1 / uResolution.x)
+	{
+		for (float iy = -radius; iy < radius; iy += 1 / uResolution.y)
+		{
+			float ir = length(float2(ix, iy));
+			if (ir > radius) continue;
+			float c = smoothstep(radius, radius - .005, ir);
+			float2 p = float2(ix, iy) + float2(x, y);
+			p = p * .5 + .5;
+			p *= uResolution;
+			Destination[p] = c;
+		}
+	}
 }

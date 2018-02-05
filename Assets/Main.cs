@@ -68,7 +68,13 @@ public class Main : MonoBehaviour {
             tempDestination.enableRandomWrite = true;
             tempDestination.Create();
         }
+        Graphics.Blit(src, tempDestination);
 
+        compute.SetVector("uResolution",
+            new Vector2(tempDestination.width, tempDestination.height));
+        compute.SetFloat("rCount", 10);
+        compute.SetFloat("aCount", 10);
+        compute.SetFloat("uTime", Time.time);
         compute.SetTexture(kernelHandle, "Source", src);
         compute.SetTexture(kernelHandle, "Destination", tempDestination);
         compute.Dispatch(kernelHandle, (tempDestination.width + 7) / 8, 

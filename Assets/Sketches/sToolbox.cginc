@@ -1,6 +1,9 @@
 ﻿#ifndef sToolbox
 #define sToolbox
 
+static const float PI = 3.14159265f;
+static const float TWOPI = PI * 2;
+
 float2 f2(float x) { return float2(x, x); }
 float3 f3(float x) { return float3(x, x, x); }
 float3 f3(float2 x, float y) { return float3(x.x, x.y, y); }
@@ -39,7 +42,7 @@ float invlerp(float x, float y, float t)
 
 float2 invlerp01(float x, float y, float2 t)
 {
-	float value = invlerp(x, y, t);
+	float2 value = invlerp(x, y, t);
 	return saturate(value);
 }
 float invlerp01(float x, float y, float t)
@@ -83,6 +86,11 @@ float random11(float x)
 	return random(x) * 2 - 1;
 }
 
+float random11(float2 x)
+{
+	return random(x) * 2 - 1;
+}
+
 float2 random211(float2 st)
 {
 	return float2(random(st), random(st * .572 + 35.67)) * 2 - 1;
@@ -97,13 +105,14 @@ float randGauss(float2 x) {
  	return value / 4;
 }
 
-fixed4 cursor(float2 st)
+#ifndef COMPUTESHADER
+float4 cursor(float2 st)
 {
 	float circleRadius = .016;
 	float circleWidth = .003;
 	float antialias = .003;
 
-	fixed4 answer;
+	float4 answer;
 	st.x *= _ScreenParams.x / _ScreenParams.y;
 	float2 mouse = uMouse;
 	mouse.x *= _ScreenParams.x / _ScreenParams.y;
@@ -121,6 +130,7 @@ fixed4 cursor(float2 st)
 	// TODO: visualize mouse.x, mouse.y
 	return answer;
 }
+#endif
 
 float noise(float x)
 {
