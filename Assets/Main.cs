@@ -13,6 +13,8 @@ public class Main : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         // instance = this;
+        GetComponent<VideoCapture>();
+        var _ = VideoCaptureCtrl.instance;
         RockVR.Video.PathConfig.SaveFolder = @"C:/Users/Yaktori/Documents/GitHub/shady/Captures/";
         var script = UnityEditor.AssetDatabase.LoadMainAssetAtPath(
             "Assets/Sketches/s01Random.cs") as UnityEditor.MonoScript;

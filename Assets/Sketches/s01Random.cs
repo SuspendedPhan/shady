@@ -26,7 +26,6 @@ public class s01Random : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
         {
         	vel = maxvel;
-        	Debug.Log(vel);
         }
     }
 
