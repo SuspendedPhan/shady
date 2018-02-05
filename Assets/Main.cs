@@ -16,6 +16,7 @@ public class Main : MonoBehaviour {
         GetComponent<VideoCapture>();
         var _ = VideoCaptureCtrl.instance;
         RockVR.Video.PathConfig.SaveFolder = @"C:/Users/Yaktori/Documents/GitHub/shady/Captures/";
+        // RockVR.Video.PathConfig.SaveFolder = @"/Users/lerp/Shady/Captures/";
         var script = UnityEditor.AssetDatabase.LoadMainAssetAtPath(
             "Assets/Sketches/s01Random.cs") as UnityEditor.MonoScript;
         gameObject.AddComponent(script.GetClass());
@@ -34,6 +35,9 @@ public class Main : MonoBehaviour {
             GetComponent<VideoCapture>().StopCapture();
             recording = false;
             Debug.Log("Stop recording.");
+        } else if (Input.GetKeyDown(KeyCode.C)) {
+            ScreenCapture.CaptureScreenshot("Captures/" + Toolbox.GetUniqueFilename() + ".png");
+            Debug.Log("Captured screenshot!");
         }
         mPlayground.SetFloat("uTime", Time.time);
         mPlayground.SetFloat("uRecording", recording ? 1 : 0);
@@ -44,7 +48,7 @@ public class Main : MonoBehaviour {
 	}
 
     void OnRenderImage(RenderTexture src, RenderTexture dest) {
-        
+
         mCursor.SetVector("uMouse", MouseUV());
         Graphics.Blit(src, dest, mPlayground);
         // Graphics.Blit(src, dest, mCursor);
