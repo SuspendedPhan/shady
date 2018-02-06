@@ -4,7 +4,7 @@ using RockVR.Video;
 using UnityEngine;
 
 public class Main : MonoBehaviour {
-    bool doCompute = false;
+    bool doCompute = true;
 
     public Material mPlayground;
     public Material mCursor;
@@ -26,6 +26,7 @@ public class Main : MonoBehaviour {
         gameObject.AddComponent(script.GetClass());
 
         compute = UnityEditor.AssetDatabase.LoadMainAssetAtPath(
+            // "Assets/temp.compute") as ComputeShader;
             "Assets/Sketches/sHelloCompute.compute") as ComputeShader;
 	}
 
@@ -83,17 +84,20 @@ public class Main : MonoBehaviour {
         }
         Graphics.Blit(src, tempDestination);
 
+        int rCount = 16;
+        int aCount = 16;
+        int groupSizeX = 8;
+        int groupSizeY = 8;
+
         compute.SetVector("uResolution",
             new Vector2(tempDestination.width, tempDestination.height));
-        compute.SetFloat("rCount", 10);
-        compute.SetFloat("aCount", 10);
+        compute.SetFloat("rCount", rCount);
+        compute.SetFloat("aCount", aCount);
         compute.SetFloat("uTime", Time.time);
         compute.SetTexture(kernelHandle, "Source", src);
         compute.SetTexture(kernelHandle, "Destination", tempDestination);
-        compute.Dispatch(kernelHandle, (tempDestination.width + 7) / 8,
-           (tempDestination.height + 7) / 8, 1);
+        compute.Dispatch(kernelHandle, rCount / groupSizeX, aCount / groupSizeY, 1);
         Graphics.Blit(tempDestination, dest);
-        return;
     }
 
     public static Vector2 MouseUV()

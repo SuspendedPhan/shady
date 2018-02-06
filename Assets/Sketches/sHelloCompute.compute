@@ -18,28 +18,19 @@ RWTexture2D<float4> Destination;
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
 	float2 uv = id.xy / uResolution;
-	// Destination[id.xy] = smoothstep(0, 1, uv.x) + smoothstep(0, 1, uv.y);
-
-	// float2 f = f2(0, 0);
 	float rStep = 1 / rCount;
 	float aStep = 1 / aCount;
 	float r = id.x / rCount;
 	float a = id.y / aCount;
 	float rOffset = random11(id.xy) * rStep / 3;
 	float aOffset = random11(id.xy) * aStep / 3;
-	// r += rOffset;
-	// a += aOffset;
+	r += rOffset;
+	a += aOffset;
 
 	float radius = .02;
 	// a += sin(uTime);
 	float x = r * cos(a * TWOPI);
 	float y = r * sin(a * TWOPI);
-	// x = x * .5 + .5;
-	// y = y * .5 + .5;
-	// x *= uResolution.x;
-	// y *= uResolution.y;
-	// Destination[int2(x, y)] = 1;
-	// return;
 	for (float ix = -radius; ix < radius; ix += 1 / uResolution.x)
 	{
 		for (float iy = -radius; iy < radius; iy += 1 / uResolution.y)
@@ -50,7 +41,11 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 			float2 p = float2(ix, iy) + float2(x, y);
 			p = p * .5 + .5;
 			p *= uResolution;
-			Destination[p] = c;
+			Destination[p] = lerp(
+				Source[p],
+				float4(101, 145, 216, 256) / 256,
+				c);
 		}
 	}
 }
+
