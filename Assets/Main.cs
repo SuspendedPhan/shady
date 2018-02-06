@@ -4,6 +4,8 @@ using RockVR.Video;
 using UnityEngine;
 
 public class Main : MonoBehaviour {
+    bool doCompute = false;
+
     public Material mPlayground;
     public Material mCursor;
     private bool recording;
@@ -53,17 +55,28 @@ public class Main : MonoBehaviour {
 	}
 
     void OnRenderImage(RenderTexture src, RenderTexture dest) {
+        if (doCompute)
+        {
+            Compute(src, dest);
+            return;
+        }
+        mCursor.SetVector("uMouse", MouseUV());
+        Graphics.Blit(src, dest, mPlayground);
+        // Graphics.Blit(src, dest, mCursor);
+    }
+
+    void Compute(RenderTexture src, RenderTexture dest) {
         int kernelHandle = compute.FindKernel("CSMain");
 
         // do we need to create a new temporary destination render texture?
-        if (null == tempDestination || src.width != tempDestination.width 
-            || src.height != tempDestination.height) 
+        if (null == tempDestination || src.width != tempDestination.width
+            || src.height != tempDestination.height)
         {
             if (null != tempDestination)
             {
                 tempDestination.Release();
             }
-            tempDestination = new RenderTexture(src.width, src.height, 
+            tempDestination = new RenderTexture(src.width, src.height,
                 src.depth);
             tempDestination.enableRandomWrite = true;
             tempDestination.Create();
@@ -77,14 +90,10 @@ public class Main : MonoBehaviour {
         compute.SetFloat("uTime", Time.time);
         compute.SetTexture(kernelHandle, "Source", src);
         compute.SetTexture(kernelHandle, "Destination", tempDestination);
-        compute.Dispatch(kernelHandle, (tempDestination.width + 7) / 8, 
+        compute.Dispatch(kernelHandle, (tempDestination.width + 7) / 8,
            (tempDestination.height + 7) / 8, 1);
         Graphics.Blit(tempDestination, dest);
         return;
-
-        mCursor.SetVector("uMouse", MouseUV());
-        Graphics.Blit(src, dest, mPlayground);
-        // Graphics.Blit(src, dest, mCursor);
     }
 
     public static Vector2 MouseUV()
