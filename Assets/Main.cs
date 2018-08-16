@@ -20,7 +20,7 @@ public class Main : MonoBehaviour {
         RockVR.Video.PathConfig.SaveFolder = @"C:/Users/Yaktori/Documents/GitHub/shady/Captures/";
         // RockVR.Video.PathConfig.SaveFolder = @"/Users/lerp/Shady/Captures/";
         var script = UnityEditor.AssetDatabase.LoadMainAssetAtPath(
-            "Assets/Sketches/s01Random.cs") as UnityEditor.MonoScript;
+            "Assets/Sketches/s07Fireflies.cs") as UnityEditor.MonoScript;
         gameObject.AddComponent(script.GetClass());
 
         compute = UnityEditor.AssetDatabase.LoadMainAssetAtPath(
@@ -53,6 +53,8 @@ public class Main : MonoBehaviour {
 	}
 
     void OnRenderImage(RenderTexture src, RenderTexture dest) {
+        Graphics.Blit(src, dest);
+        return;
         int kernelHandle = compute.FindKernel("CSMain");
 
         // do we need to create a new temporary destination render texture?
