@@ -1,18 +1,85 @@
+float sdPlane(float4 n, float3 p)
+{
+  // n must be normalized
+  return dot(p,n.xyz) + n.w;
+}
+
+float sdBox( float3 p, float3 b )
+{
+  float3 d = abs(p) - b;
+  return min(max(d.x,max(d.y,d.z)),0.0) + length(max(d,0.0));
+}
+
 float sdf(float3 p, out float color)
 {
-    float radius = 1;
-    float3 light = float3(-1, -1, 1);
-    float3 center = float3(lerp(-5, 5, uMouse.x), .5, lerp(0, 100, uMouse.y));
-    float3 toP = p - center;
-    float3 n = normalize(toP);
-    color = dot(-light, n);
-    float d = length(toP) - radius;
-    color *= smoothstep(0, -.01, d);
-    return d;
+    color = 0;
+    float color1;
+    float d1;
+    {
+        float radius = 1;
+        float3 light = float3(-1, -1, 1);
+        float3 center = float3(
+            0, 0, 12);
+            // lerp(-5, 5, uMouse.x), lerp(-5,5,uMouse.y), 12);
+        float3 toP = p - center;
+        float3 n = normalize(toP);
+        float d = length(toP) - radius;
+        if (d <= 0)
+        {
+            color = dot(-light, n);
+        }
+        color1 = dot(-light, n);
+        // color *= smoothstep(0, -.01, d);
+        d1 = d;
+        // return d;
+    }
+
+    float d2;
+    {
+        // float radius = 1;
+        // float3 light = float3(-1, -1, 1);
+        // float3 center = float3(
+        //     0, 2, 10);
+        // float3 toP = p - center;
+        // float3 n = normalize(toP);
+        // float color2 = 0;
+        // color2 += dot(-light, n);
+        // float d = length(toP) - radius;
+        // // color2 *= smoothstep(0, -.01, d);
+        // color += color2;
+        // d2 = d;
+    }
+
+    float color2 = .5;
+    {
+        // float planeD = sdPlane(float4(0,1,0,10), p);
+        // if (planeD <= 0) color += .5;
+        // d2 = planeD;
+    }
+
+    {
+        float d = sdBox(p - float3(1, .5, 15*uMouse.x), float3(1, 1, 2));
+        d2 = d;
+    }
+
+    if (d1 < d2)
+    {
+        color = color1;
+    }
+    else
+    {
+        color = color2;
+    }
+    return min(d1, d2);
+    // float planeD = sdPlane(float4(0,1,0,0), p);
+    // if (planeD < 0) color += .5;
+    // return min(d, planeD);
 }
 
 fixed4 s06Raymarch3d(float2 uv)
 {
+    // This is a box that doesn't work.
+
     float2 st = uv;
     float fov01 = .166666667;
     float3 ro = float3(st.x, st.y, 0);
@@ -44,8 +111,9 @@ fixed4 s06Raymarch3d(float2 uv)
     rd = normalize(rd);
 
     float3 p = ro;
-    float maxdist = 10;
-    float steps = 64;
+    float maxdist = 100000;
+    float stepsize = .2;
+    float steps = 100;
     float raydist = 0;
     float4 answer;
     float compute = 0;
@@ -54,13 +122,13 @@ fixed4 s06Raymarch3d(float2 uv)
         compute = i / steps;
         float color;
         float d = sdf(p, color);
-        raydist += max(d, .01);
-        if (raydist > 500) break;
-        if (d < 0)
+        raydist += max(d, stepsize);
+        if (raydist > maxdist) break;
+        if (d <= 0)
         {
             answer.rgb = color;
         }
-        p += rd * max(d, .01);
+        p = rd * raydist;
     }
     return answer;
     float3 computeColor = lerp(float3(0, 0, 1), float3(1, 0, 0), compute);
