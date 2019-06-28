@@ -3,7 +3,11 @@ guid: fae59534957262548871b4072601032c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - liveRectMbPrefab: {fileID: 224126954398399820, guid: e62a1b9ad9cfe554a9eaa9f476b73431,
+      type: 3}
+  - noiseShader: {fileID: -6465566751694194690, guid: 8f6ce43c6c434974ba384622839119e3,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
